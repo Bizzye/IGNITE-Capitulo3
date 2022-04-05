@@ -25,6 +25,12 @@ export default NextAuth({
     async signIn({user, account, profile}) {
       const { email } = user;
       // console.log(user);
+
+      if (!user?.email) {
+        console.log("Logged user does not have an e-mail")
+        return false
+      }
+
       try {
         await fauna.query(
           q.If(

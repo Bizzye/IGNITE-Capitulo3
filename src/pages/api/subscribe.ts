@@ -18,6 +18,12 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     
     const session = await getSession({ req })
+
+    if (!session?.user?.email) {
+      return res.status(400).json({
+        message: "Logged user does not have an e-mail"
+      })
+    }
     
     const user = await fauna.query<User>(
       q.Get(
